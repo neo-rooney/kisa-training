@@ -2,6 +2,8 @@
 pragma solidity ^0.8.13;
 
 contract VendingMachine {
+    // Define Event
+    event Purchase (address indexed purchaser, uint256 amount);
 
     // Declare state variables of the contract
     address public owner;
@@ -27,5 +29,6 @@ contract VendingMachine {
         require(cupcakeBalances[address(this)] >= amount, "Not enough cupcakes in stock to complete this purchase");
         cupcakeBalances[address(this)] -= amount;
         cupcakeBalances[msg.sender] += amount;
+        emit Purchase(msg.sender, amount);
     }
 }
