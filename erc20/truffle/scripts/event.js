@@ -19,7 +19,7 @@ async function event() {
       "Transfer",
       {
         filter: { from: OWNER_PUBLIC_KEY },
-        fromBlock: 0,
+        fromBlock: 6427061,
         toBlock: "latest",
       },
       function (error, events) {
