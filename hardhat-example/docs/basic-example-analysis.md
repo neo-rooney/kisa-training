@@ -17,7 +17,7 @@ npm install --save-dev hardhat
 npx hardhat init
 ```
 
-![[스크린샷 2024-08-02 오후 4.25.21.png]]
+![image](https://github.com/user-attachments/assets/0547460a-ed9b-4c32-a990-4b27d300cccb)
 
 #### 프로젝트 구조 분석
 
@@ -48,7 +48,7 @@ npx hardhat compile
 npx hardhat ignition deploy ./ignition/modules/Lock.ts
 ```
 
-![[스크린샷 2024-08-02 오후 4.30.50.png]]
+![image](https://github.com/user-attachments/assets/dca03465-278f-42e2-ba2c-76bb581341dd)
 
 #### 로컬 네트워크에 배포
 
