@@ -189,7 +189,7 @@ describe("VendingMachine", function () {
 ##### (2) test 실행
 
 ```shell title=테스트_수행
-truffle test ./test/vandingMachine.js
+npx hardhat test ./test/vandingMachine.js
 ```
 
 #### 6. ethers를 이용한 Contract interaction script 작성
