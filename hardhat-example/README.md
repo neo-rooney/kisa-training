@@ -1,13 +1,4 @@
-# Sample Hardhat Project
+# Hardhat 기초
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+- [기본 예제 분석](https://github.com/neo-rooney/kisa-training/blob/main/hardhat-example/docs/basic-example-analysis.md)
+- [ethers로 컨트렉트와 상호작용하기](https://github.com/neo-rooney/kisa-training/blob/main/hardhat-example/docs/ethers.md)
