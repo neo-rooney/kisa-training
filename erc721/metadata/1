@@ -1,5 +1,5 @@
 {
   "description": "This is Nft Example#1",
-  "image": "https://raw.githubusercontent.com/neo-rooney/kisa-training/main/erc721/metadata/image.png",
+  "image": "https://metadata-api-server-git-main-rooneydevs-projects.vercel.app/api/token/image.png",
   "name": "NFT example 1"
 }
