@@ -10,7 +10,7 @@ async function getBalance() {
     const mint = await ERC721.mint(RECEIVER_PUBLIC_KEY!);
     console.log("mint :", mint);
 
-    const numebr1NftOwnerAddresss = await ERC721.ownerOf("1");
+    const numebr1NftOwnerAddresss = await ERC721.ownerOf(1);
     console.log(`NFT 1 owner is ${numebr1NftOwnerAddresss}`);
     console.log(`RECEIVER_PUBLIC_KEY is ${RECEIVER_PUBLIC_KEY}`);
   } catch (e) {

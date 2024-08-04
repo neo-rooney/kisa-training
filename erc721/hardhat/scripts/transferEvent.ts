@@ -12,7 +12,7 @@ async function purchaseEvent() {
     const topic = await ERC721.filters.Transfer().getTopicFilter();
     const filter: any = {
       address: contractAddress,
-      fromBlock: 0,
+      fromBlock: 6434100,
       toBlock: 10000000,
       topics: [topic],
     };
