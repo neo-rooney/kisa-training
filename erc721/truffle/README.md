@@ -1,4 +1,6 @@
-#### 프로젝트 설정
+### ERC721 컨트렉트 작성
+
+#### 1. 프로젝트 설정
 
 ```shell
 mkdir erc721
@@ -16,11 +18,11 @@ npm init -y
 npm i web3
 ```
 
-#### matadata
+#### 2. matadata
 
-#### EC721 Contract 작성
+#### 3. EC721 Contract 작성
 
-1. ERC표준 Extension(Openzeppelin/contracts)설치
+##### (1) ERC표준 Extension(Openzeppelin/contracts)설치
 
 ```shell
 npm install @openzeppelin/contracts@4.8.1
@@ -40,7 +42,7 @@ contract MyERC721 is ERC721PresetMinterPauserAutoId {
 }
 ```
 
-#### 배포 스크립트 작성
+#### 4. 배포 스크립트 작성
 
 ```js title=migrations/1_deploy_erc721.js
 const myErc721 = artifacts.require("MyERC721");
@@ -50,7 +52,9 @@ module.exports = function (deployer) {
 };
 ```
 
-#### 단위 테스트 실습
+### ERC721 단위 테스트
+
+#### 1. 단위 테스트 실습
 
 ##### (1) 테스트 코드 작성
 
@@ -100,6 +104,8 @@ truffle test
 ##### (3)테스트 결과
 
 ![image](https://github.com/user-attachments/assets/04a3b2c0-f773-4251-8c67-e14892c15e74)
+
+### ERC721 로컬 테스트
 
 #### 1. 로컬 네트워크에 배포
 
@@ -305,6 +311,77 @@ transfer(OWNER_PUBLIC_KEY, OWNER_PRIVATE_KEY, RECEIVER_PUBLIC_KEY, 0);
 ```shell
 node ./scripts/transfer.js
 ```
+
+### ERC721 이벤트 로그
+
+#### 1. 이벤트란?
+
+- 이벤트는 중요한 정보를 외부에 알리는 "알림 시스템" 역할
+- 이벤트는 스마트 컨트랙트 내에서 정의되고, 특정 함수가 실행되거나 조건이 충족될 때 발생할 수 있는 로그를 블록체인에 기록하는 방법
+- 이 로그는 이후에 블록체인 외부에서 액세스할 수 있으며, DApp(분산 애플리케이션)이나 프론트엔드 애플리케이션에서 사용자에게 데이터를 시각화하여 보여 줄 수 있다.
+
+#### 2. script 작성
+
+##### (1) event 로그
+
+###### 1) 코드 작성
+
+```js title=scripts/event.js
+require("dotenv").config();
+const { RPC_Endpoints, CA, OWNER_PUBLIC_KEY } = process.env;
+
+const fs = require("fs");
+const { Web3 } = require("web3");
+
+const web3 = new Web3(RPC_Endpoints);
+
+const contractABI = JSON.parse(
+  fs.readFileSync("./build/contracts/MyERC721.json")
+).abi;
+const contractAddress = CA;
+
+const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+async function event() {
+  await contract
+    .getPastEvents(
+      "Transfer",
+      {
+        filter: { from: OWNER_PUBLIC_KEY },
+        fromBlock: 6433178, //로컬에서는 0부터 해도 괜찮다.
+        toBlock: "latest",
+      },
+      function (error, events) {
+        console.log(events);
+      }
+    )
+    .then(function (events) {
+      console.log("all events >>", events);
+      for (i in events) {
+        console.log("i >>", i);
+        console.log("blockNumber : ", events[i].blockNumber);
+        console.log("blockHash : ", events[i].blockHash);
+        console.log("from : ", events[i].returnValues.from);
+        console.log("to : ", events[i].returnValues.to);
+        console.log("tokenID : ", events[i].returnValues.tokenId);
+      }
+    });
+}
+
+event();
+```
+
+###### 2) 실행
+
+```shell
+node ./scripts/event.js
+```
+
+###### 3) 실행 결과
+
+![image](https://github.com/user-attachments/assets/72e68a75-c73f-46c7-b1fb-81aa9a85f521)
+
+### ERC721 테스트 넷에 배포
 
 #### 1. Ethereum 테스트넷
 
