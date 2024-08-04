@@ -20,6 +20,12 @@ npm i web3
 
 #### 2. matadata
 
+- [Metadata Standards](https://docs.opensea.io/docs/metadata-standards)
+- NFT(Non-Fungible Token)에 추가적인 정보를 제공하는 데이터
+- OpenSea 같은 플랫폼에서 자산의 이름, 설명, 이미지 등을 쉽게 표시할 수 있음
+- 메타데이터 자체는 온체인에 저장되지 않지만, 이 메타데이터가 어디에 있는지에 대한 URL을 온체인에 저장
+- [예시](https://testnets.opensea.io/assets/sepolia/0x7834f4896ff6e40662c253fff1f2289d4022bda2/1)
+
 #### 3. EC721 Contract 작성
 
 ##### (1) ERC표준 Extension(Openzeppelin/contracts)설치
