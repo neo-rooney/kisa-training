@@ -1,9 +1,9 @@
 #### 1. 프로젝트 설정
 
 ```shell
-mkdir accessRole
+mkdir AccessControl
 
-cd accessRole
+cd AccessControl
 
 npm init -y
 
@@ -21,7 +21,7 @@ npm install @openzeppelin/contracts@4.8.1
 
 #### 2. Smart Contract 작성
 
-```solidity title=contracts/MyAccessRole.sol
+```solidity title=contracts/MyAccessControl.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -37,7 +37,7 @@ contract AccessControlTest is AccessControl {
 
 ##### (1) 테스트 코드 작성
 
-```ts title=MyAccessRoleTest.ts
+```ts title=MyAccessControlTest.ts
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { expect } from "chai";
 import { ethers } from "hardhat";
