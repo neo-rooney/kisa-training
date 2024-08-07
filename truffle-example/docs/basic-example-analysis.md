@@ -42,7 +42,7 @@ truffle test ./test/metacoin.js
 
 - Smart Contract를 Compile하게 되면 Bytecode, OPCODE, ABI를 얻게 된다.
 - Bytecode : EVM에서 실행되는 저수준의 언어
-- API : ABI를 통해서 Client에서 정해진 Interface로 Contract와 통신
+- ABI : ABI를 통해서 Client에서 정해진 Interface로 Contract와 통신
 - OPCODE : Contract와 통신 할 때 가스비 계산에 필요, EVM은 해당 함수의 OPCODE와 사용된 데이터의 크기에 따라 Transaction Gas Limit을 하나씩 계산
 
 ```
