@@ -10,7 +10,6 @@
 5. 단위 테스트
 6. Web3.js를 이용한 Contract interaction script 작성
 7. 로컬 네트워크에 배포 및 테스트
-8. 테스트넷에 배포 및 테스트
 
 #### 1. VendingMachine sequenceDiagram
 
