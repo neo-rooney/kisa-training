@@ -1,67 +1,38 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.13;
 
-import "./MyERC721.sol";
 import "@openzeppelin/contracts/governance/Governor.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
-import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Votes.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract MyGovernor is Governor, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction {
-    MyERC721 public myERC721Token;
-
-    constructor(IVotes _token, MyERC721 _myERC721Token)
+contract MyGovernor is Governor, GovernorCountingSimple, GovernorVotes {
+    constructor(IVotes _token)
         Governor("MyGovernor")
         GovernorVotes(_token)
-        GovernorVotesQuorumFraction(4)  // 4% 정족수
-    {
-        myERC721Token = _myERC721Token;
-    }
+    {}
 
     function votingDelay() public view override returns (uint256) {
-        return 1; // 투표 시작 전 대기 블록 수
+        return 9; // 9 block to snap shot
     }
 
     function votingPeriod() public view override returns (uint256) {
-        return 5; // 투표 기간 (5블록)
+        return 5; // 5 block to vote
     }
 
-    function quorum(uint256 blockNumber) public view override returns (uint256) {
-        return super.quorum(blockNumber);
+    // // The following functions are overrides required by Solidity.
+    /**
+     * @dev Returns the quorum for a block number, in terms of number of votes: `supply * numerator / denominator`.
+     */
+    function quorum(uint256 blockNumber) public view virtual override returns (uint256) {
+        //원할 시 정족수에 대한 로직 추가 가능
+        return 1;
     }
 
-    function executeProposal(
-        address to,
-        uint256 proposalId,
-        address[] memory targets,
-        uint256[] memory values,
-        bytes[] memory calldatas,
-        bytes32 descriptionHash
-    ) external {
-        require(state(proposalId) == ProposalState.Succeeded, "Proposal not succeeded");
-
-        // 민팅 로직 실행
-        myERC721Token.mint(to);
-
-        // 제안 실행
-        _execute(proposalId, targets, values, calldatas, descriptionHash);
+    function quorumReached(uint256 proposalId) public view returns (bool){
+        return _quorumReached(proposalId);
     }
 
-    // 오버라이드 필요
-    function _execute(
-        uint256 proposalId,
-        address[] memory targets,
-        uint256[] memory values,
-        bytes[] memory calldatas,
-        bytes32 descriptionHash
-    ) internal override(Governor) {
-        super._execute(proposalId, targets, values, calldatas, descriptionHash);
-    }
-
-    function _executor() internal view override(Governor) returns (address) {
-        return super._executor();
+    function voteSucceeded(uint256 proposalId) public view returns (bool){
+        return _voteSucceeded(proposalId);
     }
 }
