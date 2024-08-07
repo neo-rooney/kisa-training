@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 // import chai from 'chai';
 // import { solidity } from 'ethereum-waffle';
@@ -20,17 +19,17 @@ function changeToBigInt(amount: number) {
 
 describe("Start Example ERC721 Governor test", async () => {
   // contracts
-  let exampleERC721: Contract;
-  let exampleERC20: Contract;
-  let governor: Contract;
+  let exampleERC721: any;
+  let exampleERC20: any;
+  let governor: any;
   //signers
-  let owner: SignerWithAddress;
-  let voter1: SignerWithAddress;
-  let voter2: SignerWithAddress;
-  let voter3: SignerWithAddress;
-  let voter4: SignerWithAddress;
-  let teamAddr: SignerWithAddress;
-  let propoasl1Id: number;
+  let owner: any;
+  let voter1: any;
+  let voter2: any;
+  let voter3: any;
+  let voter4: any;
+  let teamAddr: any;
+  let proposeId: number;
   let transferCalldata: string;
   const name = "MyNFT";
   const symbol = "MNFT";
@@ -43,29 +42,23 @@ describe("Start Example ERC721 Governor test", async () => {
   describe("Test Example exampleERC721 Governor deployment", () => {
     it("Should get correct name, symbol, decimal for the Example ERC721 Contract", async () => {
       console.log("deploying MyERC20 contract");
-      const ERC20 = await ethers.getContractFactory("MyERC20");
-      exampleERC20 = await ERC20.deploy();
-      await exampleERC20.deployed();
+      exampleERC20 = await ethers.deployContract("MyERC20");
 
       console.log("deploying MyERC721Vote contract");
-      const ERC721vote = await ethers.getContractFactory("MyERC721Vote");
-      exampleERC721 = await ERC721vote.deploy();
-      await exampleERC721.deployed();
+      exampleERC721 = await ethers.deployContract("MyERC721Vote");
 
       expect(await exampleERC721.name()).to.equal(name);
       expect(await exampleERC721.symbol()).to.equal(symbol);
-      console.log(
-        `erc721vote contract is deployed to ${exampleERC721.address}`
-      );
+      const exampleERC721CA = await exampleERC721.getAddress();
+      console.log(`erc721vote contract is deployed to ${exampleERC721CA}`);
 
       console.log("deploying governance contract");
       const Governor = await ethers.getContractFactory("MyGovernor");
-      governor = await Governor.deploy(exampleERC721.address);
-      await governor.deployed();
-
-      // expect(await governor.votingDelay()).to.equal(1);
-      // expect(await governor.votingPeriod()).to.equal(20);
-      console.log(`governor contract is deployed to ${governor.address}`);
+      governor = await Governor.deploy(exampleERC721CA);
+      const governorCa = await governor.getAddress();
+      expect(await governor.votingDelay()).to.equal(9);
+      expect(await governor.votingPeriod()).to.equal(5);
+      console.log(`governor contract is deployed to ${governorCa}`);
     });
 
     it("step 01) set proposal action", async () => {
@@ -73,7 +66,7 @@ describe("Start Example ERC721 Governor test", async () => {
       console.log("proposal currentBlockNumber is : ", currentBlockNumber);
       const erc20Token = await ethers.getContractAt(
         "MyERC20",
-        exampleERC20.address
+        await exampleERC20.getAddress()
       );
       console.log("exampleERC20.address : ", exampleERC20.address);
 
@@ -81,31 +74,33 @@ describe("Start Example ERC721 Governor test", async () => {
       let teamAddress = teamAddr.address;
       console.log("team address :", teamAddress);
       const grantAmount = 100;
-      await exampleERC20.mint(governor.address, changeToBigInt(grantAmount));
+      await exampleERC20.mint(
+        await governor.getAddress(),
+        changeToBigInt(grantAmount)
+      );
       transferCalldata = erc20Token.interface.encodeFunctionData("transfer", [
         teamAddress,
         changeToBigInt(grantAmount),
       ]);
       console.log("transferCalldata :", transferCalldata);
 
-      let proporsalId = await governor.callStatic.propose(
-        [exampleERC20.address],
+      proposeId = await governor.hashProposal(
+        [await exampleERC20.getAddress()],
         [0],
         [transferCalldata],
-        "Proposal #1: Give grant to team"
+        ethers.id("Proposal #1: Give grant to team")
       );
-      console.log("proporsalId is : ", proporsalId);
       //proposal을 해시한 값이 아이디로 나오게 된다.
+      console.log("proposeId is : ", proposeId);
       //값을 미리 받아온 후 실행, 실제로는 이벤트를 불러와서 체크할 수 있다.
       await governor.propose(
-        [exampleERC20.address],
+        [await exampleERC20.getAddress()],
         [0],
         [transferCalldata],
         "Proposal #1: Give grant to team"
       );
-      const stateOfProposal = await governor.state(proporsalId.toString());
+      const stateOfProposal = await governor.state(proposeId);
       console.log("stateOfProposal is : ", stateOfProposal);
-      propoasl1Id = proporsalId;
     });
 
     it("step 02) check get Votes", async () => {
@@ -172,18 +167,18 @@ describe("Start Example ERC721 Governor test", async () => {
         await governor.getVotes(voter4.address, currentBlockNumber)
       ).to.equal("1");
 
-      const stateOfProposal = await governor.state(propoasl1Id.toString());
+      const stateOfProposal = await governor.state(proposeId);
       console.log("stateOfProposal is : ", stateOfProposal);
     });
 
     it("step 04) castVote action", async () => {
       console.log(
         "proposal snap shot : ",
-        await governor.proposalSnapshot(propoasl1Id)
+        await governor.proposalSnapshot(proposeId)
       );
       console.log(
         "proposal deadline : ",
-        await governor.proposalDeadline(propoasl1Id)
+        await governor.proposalDeadline(proposeId)
       );
       let currentBlockNumber = await ethers.provider.getBlockNumber();
       console.log("currentBlockNumber : ", currentBlockNumber);
@@ -193,34 +188,25 @@ describe("Start Example ERC721 Governor test", async () => {
       currentBlockNumber = await ethers.provider.getBlockNumber();
       console.log("currentBlockNumber : ", currentBlockNumber);
 
-      await governor.connect(voter1).castVote(propoasl1Id.toString(), 1); //1 is FOR 0 is Against
+      await governor.connect(voter1).castVote(proposeId, 1); //1 is FOR 0 is Against
 
-      await governor.connect(voter2).castVote(propoasl1Id.toString(), 1); //1 is FOR 0 is Against
+      await governor.connect(voter2).castVote(proposeId, 1); //1 is FOR 0 is Against
 
-      let hasVoted = await governor.hasVoted(
-        propoasl1Id.toString(),
-        voter2.address
-      );
+      let hasVoted = await governor.hasVoted(proposeId, voter2.address);
       console.log("hasVoted is : ", hasVoted);
 
-      await governor.connect(voter3).castVote(propoasl1Id.toString(), 1); //1 is FOR 0 is Against
-      hasVoted = await governor.hasVoted(
-        propoasl1Id.toString(),
-        voter3.address
-      );
+      await governor.connect(voter3).castVote(proposeId, 1); //1 is FOR 0 is Against
+      hasVoted = await governor.hasVoted(proposeId, voter3.address);
       console.log("hasVoted is : ", hasVoted);
 
-      await governor.connect(voter4).castVote(propoasl1Id.toString(), 1); //1 is FOR 0 is Against
-      hasVoted = await governor.hasVoted(
-        propoasl1Id.toString(),
-        voter4.address
-      );
+      await governor.connect(voter4).castVote(proposeId, 1); //1 is FOR 0 is Against
+      hasVoted = await governor.hasVoted(proposeId, voter4.address);
       console.log("hasVoted is : ", hasVoted);
 
-      const deadline = await governor.proposalDeadline(propoasl1Id.toString());
+      const deadline = await governor.proposalDeadline(proposeId);
       console.log("deadline is ", deadline);
 
-      let stateOfProposal = await governor.state(propoasl1Id.toString());
+      let stateOfProposal = await governor.state(proposeId);
       console.log("stateOfProposal is : ", stateOfProposal);
 
       currentBlockNumber = await ethers.provider.getBlockNumber();
@@ -233,15 +219,16 @@ describe("Start Example ERC721 Governor test", async () => {
       await ethers.provider.send("evm_mine", []); //mine to start vote
       currentBlockNumber = await ethers.provider.getBlockNumber();
       console.log("currentBlockNumber is : ", currentBlockNumber);
+
       const quorum = await governor.quorum(currentBlockNumber);
       console.log("qurom :", quorum);
-      stateOfProposal = await governor.state(propoasl1Id.toString());
+      stateOfProposal = await governor.state(proposeId);
       console.log("stateOfProposal is : ", stateOfProposal);
-      let quorumReached = await governor.quorumReached(propoasl1Id.toString());
+      let quorumReached = await governor.quorumReached(proposeId);
       console.log("quorumReached is : ", quorumReached);
-      let proposalVotes = await governor.proposalVotes(propoasl1Id.toString());
+      let proposalVotes = await governor.proposalVotes(proposeId);
       console.log("proposalVotes is : ", proposalVotes);
-      let voteSucceeded = await governor.voteSucceeded(propoasl1Id.toString());
+      let voteSucceeded = await governor.voteSucceeded(proposeId);
       console.log("voteSucceeded is : ", voteSucceeded);
       await ethers.provider.send("evm_mine", []); //mine to start vote
       await ethers.provider.send("evm_mine", []); //mine to start vote
@@ -249,15 +236,18 @@ describe("Start Example ERC721 Governor test", async () => {
       await ethers.provider.send("evm_mine", []); //mine to start vote
       await ethers.provider.send("evm_mine", []); //mine to start vote
       await ethers.provider.send("evm_mine", []); //mine to start vote
-      const descriptionHash = ethers.utils.id(
-        "Proposal #1: Give grant to team"
-      );
+      const descriptionHash = ethers.id("Proposal #1: Give grant to team");
+
+      const balance = await exampleERC20.balanceOf(teamAddr);
+      console.log("balance", balance);
       await governor.execute(
-        [exampleERC20.address],
+        [await exampleERC20.getAddress()],
         [0],
         [transferCalldata],
         descriptionHash
       );
+      const balanceAfter = await exampleERC20.balanceOf(teamAddr);
+      console.log("balanceAfter", balanceAfter);
     });
   });
 });
