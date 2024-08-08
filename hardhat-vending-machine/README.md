@@ -222,9 +222,9 @@ getBalance();
 
 ##### (2) purchase script 작성
 
-- scripts/purchase.js
+- scripts/purchase.ts
 
-```ts title=scripts/purchase.js
+```ts title=scripts/purchase.ts
 import { ethers } from "hardhat";
 
 async function purchase() {
