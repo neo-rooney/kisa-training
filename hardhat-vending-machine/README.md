@@ -193,9 +193,11 @@ npx hardhat test ./test/vandingMachine.ts
 
 #### 6. ethers를 이용한 Contract interaction script 작성
 
-##### (1) getBalances.js script 작성
+##### (1) getBalances script 작성
 
-```ts title=scripts/getBalances.js
+- scripts/getBalances.ts
+
+```ts title=scripts/getBalances.ts
 import { ethers } from "hardhat";
 
 async function getBalance() {
@@ -219,6 +221,8 @@ getBalance();
 ```
 
 ##### (2) purchase script 작성
+
+- scripts/purchase.js
 
 ```ts title=scripts/purchase.js
 import { ethers } from "hardhat";
@@ -249,6 +253,8 @@ purchase();
 ```
 
 ##### (3) refill script 작성
+
+- scripts/refill.js
 
 ```ts title=scripts/refill.js
 import { ethers } from "hardhat";
@@ -281,7 +287,9 @@ purchase();
 
 ##### (4) Event Script 작성
 
-```ts title=scripts/purchaseEvent.js
+- scripts/purchaseEvent.ts
+
+```ts title=scripts/purchaseEvent.ts
 import { ethers } from "hardhat";
 import json from "../artifacts/contracts/VendingMachine.sol/VendingMachine.json";
 
