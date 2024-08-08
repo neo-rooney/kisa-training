@@ -202,7 +202,7 @@ import { ethers } from "hardhat";
 
 async function getBalance() {
   try {
-    const contractAddress = "0x27c4db64FbBca8CC26E79f773e6899812A2D270D";
+    const contractAddress = "";
 
     const vendingMachine = await ethers.getContractAt(
       "VendingMachine",
@@ -231,7 +231,7 @@ async function purchase() {
   try {
     const amount = 10;
 
-    const contractAddress = "0x27c4db64FbBca8CC26E79f773e6899812A2D270D";
+    const contractAddress = "";
 
     const vendingMachine = await ethers.getContractAt(
       "VendingMachine",
@@ -263,7 +263,7 @@ async function purchase() {
   try {
     const amount = 1;
 
-    const contractAddress = "0x27c4db64FbBca8CC26E79f773e6899812A2D270D";
+    const contractAddress = "";
 
     const vendingMachine = await ethers.getContractAt(
       "VendingMachine",
@@ -295,7 +295,7 @@ import json from "../artifacts/contracts/VendingMachine.sol/VendingMachine.json"
 
 async function purchaseEvent() {
   try {
-    const contractAddress = "0x27c4db64FbBca8CC26E79f773e6899812A2D270D";
+    const contractAddress = "";
 
     const vendingMachine = await ethers.getContractAt(
       "VendingMachine",
@@ -350,9 +350,7 @@ const config: HardhatUserConfig = {
   networks: {
     ganache: {
       url: "http://127.0.0.1:7545/",
-      accounts: [
-        "0xecffef981f0ffad39cb7b15ae9ba4197f5390cbe74dced527babf0e7f4c12686",
-      ],
+      accounts: [""],
     },
   },
   solidity: "0.8.24",
