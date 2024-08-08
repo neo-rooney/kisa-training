@@ -75,7 +75,7 @@ describe("MyOwnable", function () {
 ##### (2) 테스트 실행
 
 ```shell
-npx harhat test
+npx hardhat test
 ```
 
 ##### (3) 테스트 결과
