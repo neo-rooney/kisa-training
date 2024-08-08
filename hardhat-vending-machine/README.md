@@ -193,14 +193,14 @@ npx hardhat test ./test/vandingMachine.ts
 
 #### 6. ethers를 이용한 Contract interaction script 작성
 
-##### (1) getBalances script 작성
+##### (1) 컵케익 잔고 조회 script 작성
 
-- scripts/getBalances.ts
+- scripts/cupcakeBalance.ts
 
-```ts title=scripts/getBalances.ts
+```ts title=scripts/cupcakeBalance.ts
 import { ethers } from "hardhat";
 
-async function getBalance() {
+async function cupcakeBalance() {
   try {
     const contractAddress = "";
 
@@ -217,7 +217,7 @@ async function getBalance() {
   }
 }
 
-getBalance();
+cupcakeBalance();
 ```
 
 ##### (2) purchase script 작성
