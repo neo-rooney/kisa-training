@@ -254,7 +254,7 @@ purchase();
 
 ##### (3) refill script 작성
 
-- scripts/refill.js
+- scripts/refill.ts
 
 ```ts title=scripts/refill.js
 import { ethers } from "hardhat";
