@@ -367,7 +367,7 @@ const { CA, RECEIVER_PUBLIC_KEY } = process.env;
 import { ethers } from "hardhat";
 import json from "../artifacts/contracts/MyERC721.sol/MyERC721.json";
 
-async function purchaseEvent() {
+async function transferEvent() {
   try {
     const contractAddress = CA!;
 
@@ -407,7 +407,7 @@ async function purchaseEvent() {
   }
 }
 
-purchaseEvent();
+transferEvent();
 ```
 
 ###### 2) 실행
