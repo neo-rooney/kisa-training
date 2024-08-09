@@ -287,7 +287,7 @@ require("dotenv").config();
 const { CA, RECEIVER_PUBLIC_KEY } = process.env;
 import { ethers } from "hardhat";
 
-async function getBalance() {
+async function mint() {
   try {
     const contractAddress = CA!;
     const ERC721 = await ethers.getContractAt("MyERC721", contractAddress);
@@ -304,7 +304,7 @@ async function getBalance() {
   }
 }
 
-getBalance();
+mint();
 ```
 
 ###### 2) 실행
@@ -322,7 +322,7 @@ require("dotenv").config();
 const { CA, OWNER_PUBLIC_KEY, RECEIVER_PUBLIC_KEY } = process.env;
 import { ethers } from "hardhat";
 
-async function getBalance() {
+async function transfer() {
   try {
     const contractAddress = CA!;
     const ERC721 = await ethers.getContractAt("MyERC721", contractAddress);
@@ -344,7 +344,7 @@ async function getBalance() {
   }
 }
 
-getBalance();
+transfer();
 ```
 
 ###### 2) 실행
