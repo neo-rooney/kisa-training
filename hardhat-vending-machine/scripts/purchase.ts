@@ -11,8 +11,10 @@ async function purchase() {
       contractAddress
     );
 
+    const cupcakePrice = 0.0001;
+
     const purchase = await vendingMachine.purchase(amount, {
-      value: (amount * 10 ** 18).toString(),
+      value: ethers.parseEther((amount * cupcakePrice).toFixed(18)),
     });
 
     console.log("purchase :", purchase);

@@ -60,6 +60,7 @@ contract VendingMachine {
 
     // Allow anyone to purchase cupcakes
     function purchase(uint amount) public payable {
+        require(msg.value >= amount * 0.0001 ether, "You must pay at least 0.0001 ETH per cupcake");
         require(msg.value >= amount * 1 ether, "You must pay at least 1 ETH per cupcake");
         require(cupcakeBalances[address(this)] >= amount, "Not enough cupcakes in stock to complete this purchase");
         cupcakeBalances[address(this)] -= amount;
@@ -138,10 +139,11 @@ describe("VendingMachine", function () {
       console.log("receiverStartingBalance >>", receiverStartingBalance);
 
       const amount = 10;
+      const cupcakePrice = 0.0001;
       await expect(
-        vendingMachine
-          .connect(otherAccount)
-          .purchase(amount, { value: (amount * 10 ** 18).toString() })
+        vendingMachine.connect(otherAccount).purchase(amount, {
+          value: ethers.parseEther((amount * cupcakePrice).toFixed(18)),
+        })
       )
         .to.emit(vendingMachine, "Purchase")
         .withArgs(otherAccount.address, amount);
