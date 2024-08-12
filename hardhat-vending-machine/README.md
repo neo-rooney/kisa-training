@@ -61,7 +61,6 @@ contract VendingMachine {
     // Allow anyone to purchase cupcakes
     function purchase(uint amount) public payable {
         require(msg.value >= amount * 0.0001 ether, "You must pay at least 0.0001 ETH per cupcake");
-        require(msg.value >= amount * 1 ether, "You must pay at least 1 ETH per cupcake");
         require(cupcakeBalances[address(this)] >= amount, "Not enough cupcakes in stock to complete this purchase");
         cupcakeBalances[address(this)] -= amount;
         cupcakeBalances[msg.sender] += amount;
@@ -240,8 +239,10 @@ async function purchase() {
       contractAddress
     );
 
+    const cupcakePrice = 0.0001;
+
     const purchase = await vendingMachine.purchase(amount, {
-      value: (amount * 10 ** 18).toString(),
+      value: (amount * 10 * cupcakePrice ** 18).toString(),
     });
 
     console.log("purchase :", purchase);
