@@ -1,18 +1,12 @@
 #### 기본 예제 프로젝트에 web3.js 설치
 
-1. 패키지 관리 도구 init
-
-```
-npm init -y
-```
-
-2. [web3.js 설치](https://docs.web3js.org/guides/getting_started/quickstart)
+1. [web3.js 설치](https://docs.web3js.org/guides/getting_started/quickstart)
 
 ```
 npm i web3
 ```
 
-3. 지갑 조회 script 작성
+2. 지갑 조회 script 작성
 
 ```js
 const fs = require("fs");
@@ -40,13 +34,13 @@ async function getBalance() {
 getBalance();
 ```
 
-4. 잔액 조회 script 실행
+3. 잔액 조회 script 실행
 
 ```
 node scripts/getBalances.js
 ```
 
-5. transfer script 작성
+4. transfer script 작성
 
 ```js
 const fs = require("fs");
@@ -91,7 +85,7 @@ async function purchase() {
 purchase();
 ```
 
-6. 전송 스크립트 실행
+5. 전송 스크립트 실행
 
 ```
 node scripts/transfer.js

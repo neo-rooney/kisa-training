@@ -23,6 +23,10 @@ mkdir truffle-vending-machine
 
 cd truffle-vending-machine
 
+npm init -y
+
+npm i truffle
+
 truffle init
 ```
 
@@ -56,7 +60,7 @@ contract VendingMachine {
 
     // Allow anyone to purchase cupcakes
     function purchase(uint amount) public payable {
-        require(msg.value >= amount * 1 ether, "You must pay at least 1 ETH per cupcake");
+        require(msg.value >= amount * 0.0001 ether, "You must pay at least 0.0001 ETH per cupcake");
         require(cupcakeBalances[address(this)] >= amount, "Not enough cupcakes in stock to complete this purchase");
         cupcakeBalances[address(this)] -= amount;
         cupcakeBalances[msg.sender] += amount;
@@ -112,9 +116,10 @@ contract("VendingMachine", async (accounts) => {
 
     // Make transaction from contract to receiver.
     const amount = 10;
+    const cupcakePrice = 0.0001;
     await vendingMachineInstance.purchase(amount, {
       from: receiver,
-      value: 10 * 10 ** 18,
+      value: amount * cupcakePrice * 10 ** 18,
     });
 
     // Get balances of contract and receiver after the transactions.
@@ -177,8 +182,6 @@ truffle test ./test/vandingMachine.js
 ##### (1) web3.js 설치
 
 ```shell title=web3.js
-npm init -y
-
 npm install web3
 ```
 
@@ -302,12 +305,12 @@ refill();
 const fs = require("fs");
 const { Web3 } = require("web3");
 
-const web3 = new Web3("http://127.0.0.1:7545");
+const web3 = new Web3("");
 
 const contractABI = JSON.parse(
   fs.readFileSync("./build/contracts/VendingMachine.json")
 ).abi;
-const contractAddress = "0x3Df608fD54707Bd0F5D4f4C71e9cA2aa0Fa9Dd9c";
+const contractAddress = "";
 
 const contract = new web3.eth.Contract(contractABI, contractAddress);
 
