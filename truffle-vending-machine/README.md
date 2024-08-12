@@ -229,10 +229,11 @@ async function purchase() {
     const receiver = accounts[2];
     const amount = 1;
     const value = amount * 10 ** 18;
+    const cupcakePrice = 0.0001;
 
     await contract.methods
       .purchase(amount)
-      .send({ from: receiver, value })
+      .send({ from: receiver, value: value * cupcakePrice })
       .on("transactionHash", function (hash) {
         console.log("tx hash >>", hash);
       })

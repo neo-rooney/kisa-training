@@ -25,9 +25,10 @@ contract("VendingMachine", async (accounts) => {
 
     // Make transaction from contract to receiver.
     const amount = 10;
+    const cupcakePrice = 0.0001;
     await vendingMachineInstance.purchase(amount, {
       from: receiver,
-      value: 10 * 10 ** 18,
+      value: amount * cupcakePrice * 10 ** 18,
     });
 
     // Get balances of contract and receiver after the transactions.
