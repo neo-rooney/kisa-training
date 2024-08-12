@@ -4,7 +4,11 @@
 2. [Truffle Boxes](https://archive.trufflesuite.com/boxes)를 이용한 예제 Template 생성
 
 ```bash
-truffle unbox metacoin ./truffle-example
+mkdir truffle-example
+
+npm install truffle
+
+truffle unbox metacoin .
 ```
 
 #### 프로젝트 구조 분석
