@@ -6,6 +6,10 @@
 ```bash
 mkdir truffle-example
 
+cd truffle-example
+
+npm init -y
+
 npm install truffle
 
 truffle unbox metacoin .
