@@ -76,6 +76,8 @@ contract VendingMachine {
 
 #### 4. Deploy Script 작성
 
+- 1_deploy_vendinMachine.js
+
 ```js title=migrations/1_deploy_contract.js 작성
 const VendingMachine = artifacts.require("VendingMachine");
 
